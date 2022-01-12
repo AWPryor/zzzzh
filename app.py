@@ -5,19 +5,6 @@ app = Flask(__name__)
 
 
 
-
-@app.route("/")
-def index():
-    return "Welcome to the index page"
-
-@app.route("/hi")
-def who():
-    return "who are you?"
-
-@app.route("/hi/<username>")
-def greet(username):
-    return f"Hi there, {username}"
-
 @app.route("/PassCheck/")
 def form():
     return render_template('my-form.html')
@@ -36,4 +23,19 @@ def lists(text):
     result = []
     result = Gogo(text)
     print(result)
+    if result == ("No results found"):
+        return redirect('/PassCheck/Invalid')
     return render_template('options.html', result=result)
+
+@app.route('/PassCheck/Invalid/', methods = ['POST', 'GET'])
+def invalid():
+    if request.method == 'GET':
+        return render_template('my-form.html', message = "No results found please try again")
+
+    if request.method == 'POST':
+        text = request.form['text']
+        processed_text = text.upper()
+        return redirect("/PassCheck/" + processed_text, code=302)
+
+
+
