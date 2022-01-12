@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request, redirect
 from temp import Gogo
 
 app = Flask(__name__)
@@ -27,6 +27,7 @@ def form():
 def my_form_post():
     text = request.form['text']
     processed_text = text.upper()
+    return redirect("/PassCheck/" + processed_text, code=302)
 
 
 @app.route('/PassCheck/<text>/')
